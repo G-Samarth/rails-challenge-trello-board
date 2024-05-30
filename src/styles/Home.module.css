@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f4f5f7;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}

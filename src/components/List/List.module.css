@@ -1,0 +1,35 @@
+.list {
+  background-color: white;
+  border-radius: 3px;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.listHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cardWrapper {
+  margin-bottom: 10px;
+}
+
+.addCardButton,
+.listHeader button {
+  background-color: #0079bf;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.addCardButton:hover,
+.listHeader button:hover {
+  background-color: #026aa7;
+}
