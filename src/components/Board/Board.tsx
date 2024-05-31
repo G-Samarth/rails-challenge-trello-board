@@ -17,7 +17,7 @@ interface List {
 interface BoardProps {
   lists: List[];
   addCard: (listId: string, content: string) => void;
-  removeCard: (listId: string, cardId: string) => void;
+  removeCard: (cardId: string) => void;
   addList: (title: string) => void;
   removeList: (listId: string) => void;
   onDragEnd: (result: DropResult) => void;
@@ -37,9 +37,9 @@ const Board: React.FC<BoardProps> = ({
         <Droppable key={list.id} droppableId={list.id} type="CARD">
           {(provided) => (
             <div
-              className={styles.listWrapper}
               ref={provided.innerRef}
               {...provided.droppableProps}
+              className={styles.listWrapper}
             >
               <List
                 list={list}

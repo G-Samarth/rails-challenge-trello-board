@@ -14,8 +14,9 @@ model List {
 }
 
 model Card {
-  id      String @id @default(cuid())
-  content String
-  listId  String
-  list    List   @relation(fields: [listId], references: [id])
+  id        String   @id @default(cuid())
+  content   String
+  listId    String
+  list      List     @relation(fields: [listId], references: [id])
+  position  Int
 }

@@ -39,6 +39,10 @@ export const appRouter = trpc
         });
       }
 
+      await ctx.prisma.card.deleteMany({
+        where: { listId: input },
+      });
+
       return ctx.prisma.list.delete({
         where: {
           id: input,
@@ -90,6 +94,38 @@ export const appRouter = trpc
           id: input,
         },
       });
+    },
+  })
+  .mutation("updateCardPosition", {
+    input: z.object({
+      cardId: z.string(),
+      newListId: z.string(),
+      newPosition: z.number(),
+    }),
+    resolve: async ({ input, ctx }) => {
+      const { cardId, newListId, newPosition } = input;
+
+      const card = await ctx.prisma.card.findUnique({
+        where: { id: cardId },
+      });
+
+      if (!card) {
+        throw new trpc.TRPCError({
+          code: "NOT_FOUND",
+          message: "Card not found",
+        });
+      }
+
+      // Update the card's listId and position
+      await ctx.prisma.card.update({
+        where: { id: cardId },
+        data: {
+          listId: newListId,
+          position: newPosition,
+        },
+      });
+
+      return card;
     },
   });
 

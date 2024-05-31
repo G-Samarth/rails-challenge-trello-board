@@ -1,5 +1,5 @@
 import React from "react";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import Card from "../Card/Card";
 import styles from "./List.module.css";
 
@@ -15,7 +15,7 @@ interface ListProps {
     cards: Card[];
   };
   addCard: (listId: string, content: string) => void;
-  removeCard: (listId: string, cardId: string) => void;
+  removeCard: (cardId: string) => void;
   removeList: (listId: string) => void;
 }
 
@@ -30,20 +30,31 @@ const List: React.FC<ListProps> = ({
       <h3>{list.title}</h3>
       <button onClick={() => removeList(list.id)}>Delete List</button>
     </div>
-    {list.cards.map((card, index) => (
-      <Draggable key={card.id} draggableId={card.id} index={index}>
-        {(provided) => (
-          <div
-            className={styles.cardWrapper}
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <Card card={card} removeCard={() => removeCard(list.id, card.id)} />
-          </div>
-        )}
-      </Draggable>
-    ))}
+    <Droppable droppableId={list.id} type="CARD">
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          className={styles.cards}
+        >
+          {list.cards.map((card, index) => (
+            <Draggable key={card.id} draggableId={card.id} index={index}>
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                  className={styles.cardWrapper}
+                >
+                  <Card card={card} removeCard={() => removeCard(card.id)} />
+                </div>
+              )}
+            </Draggable>
+          ))}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
     <button
       className={styles.addCardButton}
       onClick={() => addCard(list.id, `New Card ${new Date().getTime()}`)}
