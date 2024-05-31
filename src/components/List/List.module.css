@@ -1,9 +1,8 @@
 .list {
-  background-color: white;
-  border-radius: 3px;
+  background: #f4f5f7;
+  border-radius: 4px;
   padding: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  width: 280px;
+  width: 300px;
   display: flex;
   flex-direction: column;
 }
@@ -15,21 +14,42 @@
   margin-bottom: 10px;
 }
 
+.listHeader h3 {
+  font-size: 18px;
+  color: #333;
+}
+
+.listHeader button {
+  background-color: #eb5a46;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.listHeader button:hover {
+  background-color: #c94434;
+}
+
+.cards {
+  flex-grow: 1;
+}
+
 .cardWrapper {
   margin-bottom: 10px;
 }
 
-.addCardButton,
-.listHeader button {
+.addCardButton {
   background-color: #0079bf;
   color: white;
   border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
+  padding: 10px;
+  border-radius: 4px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
-.addCardButton:hover,
-.listHeader button:hover {
-  background-color: #026aa7;
+.addCardButton:hover {
+  background-color: #005a8c;
 }

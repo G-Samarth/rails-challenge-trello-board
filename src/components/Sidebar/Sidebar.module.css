@@ -1,22 +1,24 @@
 .sidebar {
-  width: 220px;
-  background-color: #f4f5f7;
+  background: linear-gradient(to bottom, #3498db, #5dade2);
+  color: white;
   padding: 20px;
-  border-right: 1px solid #dcdcdc;
+  width: 10vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
 }
 
-.sidebar ul li {
-  margin-bottom: 15px;
+.sidebar li {
+  margin: 10px 0;
   cursor: pointer;
-  color: #026aa7;
-  font-weight: bold;
+  font-size: 16px;
 }
 
-.sidebar ul li:hover {
+.sidebar li:hover {
   text-decoration: underline;
 }

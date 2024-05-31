@@ -32,32 +32,41 @@ const Board: React.FC<BoardProps> = ({
   onDragEnd,
 }) => (
   <DragDropContext onDragEnd={onDragEnd}>
-    <div className={styles.board}>
-      {lists.map((list) => (
-        <Droppable key={list.id} droppableId={list.id} type="CARD">
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className={styles.listWrapper}
-            >
-              <List
-                list={list}
-                addCard={addCard}
-                removeCard={removeCard}
-                removeList={removeList}
-              />
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      ))}
-      <button
-        className={styles.addListButton}
-        onClick={() => addList("New List")}
-      >
-        Add List
-      </button>
+    <div className={styles.boardContainer}>
+      <div className={styles.boardHeader}>
+        <h2>Team Board</h2>
+        <div className={styles.boardActions}>
+          <button>Board</button>
+          <button>Invite</button>
+        </div>
+      </div>
+      <div className={styles.board}>
+        {lists.map((list) => (
+          <Droppable key={list.id} droppableId={list.id} type="CARD">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className={styles.listWrapper}
+              >
+                <List
+                  list={list}
+                  addCard={addCard}
+                  removeCard={removeCard}
+                  removeList={removeList}
+                />
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        ))}
+        <button
+          className={styles.addListButton}
+          onClick={() => addList("New List")}
+        >
+          Add List
+        </button>
+      </div>
     </div>
   </DragDropContext>
 );
