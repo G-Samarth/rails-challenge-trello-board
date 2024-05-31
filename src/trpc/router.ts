@@ -8,11 +8,14 @@ export const appRouter = trpc
     resolve: async ({ ctx }) => {
       return ctx.prisma.list.findMany({
         include: {
-          cards: true,
+          cards: {
+            orderBy: { position: "asc" },
+          },
         },
       });
     },
   })
+
   .mutation("addList", {
     input: z.object({
       title: z.string(),
@@ -67,10 +70,20 @@ export const appRouter = trpc
         });
       }
 
+      // Get the current max position in the list
+      const maxPosition = await ctx.prisma.card
+        .findMany({
+          where: { listId: input.listId },
+          orderBy: { position: "desc" },
+          take: 1,
+        })
+        .then((cards: { position: number }[]) => (cards[0]?.position ?? 0) + 1);
+
       return ctx.prisma.card.create({
         data: {
           content: input.content,
           listId: input.listId,
+          position: maxPosition,
         },
       });
     },
@@ -116,13 +129,28 @@ export const appRouter = trpc
         });
       }
 
-      // Update the card's listId and position
+      // Move the card to the new list and update its position
       await ctx.prisma.card.update({
         where: { id: cardId },
         data: {
           listId: newListId,
           position: newPosition,
         },
+      });
+
+      // Update the positions of other cards in the destination list
+      await ctx.prisma.$transaction(async (prisma: typeof ctx.prisma) => {
+        const cards = await prisma.card.findMany({
+          where: { listId: newListId },
+          orderBy: { position: "asc" },
+        });
+
+        for (let i = 0; i < cards.length; i++) {
+          await prisma.card.update({
+            where: { id: cards[i].id },
+            data: { position: i },
+          });
+        }
       });
 
       return card;
