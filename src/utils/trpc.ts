@@ -5,11 +5,10 @@ export const trpc = createReactQueryHooks<AppRouter>();
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") {
-    // In the browser, we return a relative URL
     return "";
   }
-  // When rendering on the server, we return an absolute URL
-  // Note: Make sure to set the NEXT_PUBLIC_VERCEL_URL environment variable when deploying
+
+  // When rendering on the server, we return an absolute URL (Set VERCEL_URL)
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
