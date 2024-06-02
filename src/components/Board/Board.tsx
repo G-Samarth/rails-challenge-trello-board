@@ -6,7 +6,7 @@ import { listsAtom } from "../../atoms";
 import styles from "./Board.module.css";
 
 interface BoardProps {
-  addCard: (listId: string, content: string) => void;
+  addCard: (listId: string, title: string, description: string) => void;
   removeCard: (cardId: string) => void;
   addList: (title: string) => void;
   removeList: (listId: string) => void;

@@ -7,6 +7,7 @@ import BoardNoSSR from "../components/Board/BoardNoSSR";
 import { listsAtom } from "../atoms";
 import styles from "../styles/Home.module.css";
 import { DropResult } from "react-beautiful-dnd";
+import { List } from "../types";
 
 const Home = () => {
   const { data: listsData, refetch } = trpc.useQuery(["getLists"]);
@@ -30,7 +31,7 @@ const Home = () => {
 
   useEffect(() => {
     if (listsData) {
-      setLists(listsData);
+      setLists(listsData as List[]);
     }
   }, [listsData, setLists]);
 
@@ -60,9 +61,13 @@ const Home = () => {
     }
   };
 
-  const handleAddCard = async (listId: string, content: string) => {
+  const handleAddCard = async (
+    listId: string,
+    title: string,
+    description: string
+  ) => {
     try {
-      await addCard.mutateAsync({ listId, content });
+      await addCard.mutateAsync({ listId, title, description });
     } catch (err) {
       if (err instanceof Error) {
         console.error("Error adding card:", err.message);

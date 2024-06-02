@@ -40,16 +40,32 @@
   margin-bottom: 10px;
 }
 
-.addCardButton {
+.addCardForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.addCardForm input,
+.addCardForm textarea {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.addCardForm button {
   background-color: #0079bf;
   color: white;
   border: none;
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px;
 }
 
-.addCardButton:hover {
+.addCardForm button:hover {
   background-color: #005a8c;
 }

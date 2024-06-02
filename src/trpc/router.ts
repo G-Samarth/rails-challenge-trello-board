@@ -9,13 +9,18 @@ export const appRouter = trpc
       return ctx.prisma.list.findMany({
         include: {
           cards: {
+            select: {
+              id: true,
+              title: true,
+              description: true,
+              position: true,
+            },
             orderBy: { position: "asc" },
           },
         },
       });
     },
   })
-
   .mutation("addList", {
     input: z.object({
       title: z.string(),
@@ -56,7 +61,8 @@ export const appRouter = trpc
   .mutation("addCard", {
     input: z.object({
       listId: z.string(),
-      content: z.string(),
+      title: z.string(),
+      description: z.string(),
     }),
     resolve: async ({ input, ctx }) => {
       const list = await ctx.prisma.list.findUnique({
@@ -81,7 +87,8 @@ export const appRouter = trpc
 
       return ctx.prisma.card.create({
         data: {
-          content: input.content,
+          title: input.title,
+          description: input.description,
           listId: input.listId,
           position: maxPosition,
         },

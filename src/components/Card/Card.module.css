@@ -5,12 +5,27 @@
   padding: 10px;
   margin-bottom: 10px;
   display: flex;
+  flex-direction: column;
+  word-wrap: break-word; /* Ensure words wrap correctly */
+}
+
+.cardHeader {
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.card p {
+.cardHeader h4 {
   margin: 0;
+  flex: 1; /* Ensure the title takes available space */
+  white-space: nowrap; /* Prevent title text from wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Show ellipsis for overflow text */
+}
+
+.card p {
+  margin: 10px 0 0 0;
+  word-wrap: break-word; /* Ensure words wrap correctly */
 }
 
 .card button {
