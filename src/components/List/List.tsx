@@ -2,18 +2,10 @@ import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import Card from "../Card/Card";
 import styles from "./List.module.css";
-
-interface Card {
-  id: string;
-  content: string;
-}
+import { List as ListType } from "../../types";
 
 interface ListProps {
-  list: {
-    id: string;
-    title: string;
-    cards: Card[];
-  };
+  list: ListType;
   addCard: (listId: string, content: string) => void;
   removeCard: (cardId: string) => void;
   removeList: (listId: string) => void;

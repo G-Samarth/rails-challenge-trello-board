@@ -1,25 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useAtom } from "jotai";
 import { trpc } from "../utils/trpc";
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
 import BoardNoSSR from "../components/Board/BoardNoSSR";
+import { listsAtom } from "../atoms";
 import styles from "../styles/Home.module.css";
 import { DropResult } from "react-beautiful-dnd";
 
-interface Card {
-  id: string;
-  content: string;
-  position: number; // Ensure position is part of the card
-}
-
-interface List {
-  id: string;
-  title: string;
-  cards: Card[];
-}
-
-export default function Home() {
-  const { data: lists, refetch } = trpc.useQuery(["getLists"]);
+const Home = () => {
+  const { data: listsData, refetch } = trpc.useQuery(["getLists"]);
   const addList = trpc.useMutation(["addList"], {
     onSuccess: () => refetch(),
   });
@@ -36,13 +26,13 @@ export default function Home() {
     onSuccess: () => refetch(),
   });
 
-  const [localLists, setLocalLists] = useState<List[]>(lists || []);
+  const [lists, setLists] = useAtom(listsAtom);
 
   useEffect(() => {
-    if (lists) {
-      setLocalLists(lists);
+    if (listsData) {
+      setLists(listsData);
     }
-  }, [lists]);
+  }, [listsData, setLists]);
 
   const handleAddList = async (title: string) => {
     try {
@@ -58,9 +48,7 @@ export default function Home() {
 
   const handleDeleteList = async (listId: string) => {
     try {
-      setLocalLists((prevLists) =>
-        prevLists.filter((list) => list.id !== listId)
-      );
+      setLists((prevLists) => prevLists.filter((list) => list.id !== listId));
       await deleteList.mutateAsync(listId);
       refetch();
     } catch (err) {
@@ -97,22 +85,22 @@ export default function Home() {
   };
 
   const handleDragEnd = async (result: DropResult) => {
-    if (!localLists) return;
+    if (!lists) return;
 
     const { destination, source, draggableId } = result;
     if (!destination) return;
 
-    const sourceListIndex = localLists.findIndex(
-      (list: List) => list.id === source.droppableId
+    const sourceListIndex = lists.findIndex(
+      (list) => list.id === source.droppableId
     );
-    const destinationListIndex = localLists.findIndex(
-      (list: List) => list.id === destination.droppableId
+    const destinationListIndex = lists.findIndex(
+      (list) => list.id === destination.droppableId
     );
 
     if (sourceListIndex === -1 || destinationListIndex === -1) return;
 
-    const sourceList = localLists[sourceListIndex];
-    const destinationList = localLists[destinationListIndex];
+    const sourceList = lists[sourceListIndex];
+    const destinationList = lists[destinationListIndex];
 
     const [movedCard] = sourceList.cards.splice(source.index, 1);
     destinationList.cards.splice(destination.index, 0, movedCard);
@@ -125,11 +113,11 @@ export default function Home() {
       card.position = index;
     });
 
-    const updatedLists = [...localLists];
+    const updatedLists = [...lists];
     updatedLists[sourceListIndex] = sourceList;
     updatedLists[destinationListIndex] = destinationList;
 
-    setLocalLists(updatedLists);
+    setLists(updatedLists);
 
     try {
       await updateCardPosition.mutateAsync({
@@ -153,7 +141,6 @@ export default function Home() {
       <div className={styles.main}>
         <Sidebar />
         <BoardNoSSR
-          lists={localLists || []}
           addCard={handleAddCard}
           removeCard={handleDeleteCard}
           addList={handleAddList}
@@ -163,4 +150,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default Home;
