@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useAtom } from "jotai";
 import List from "../List/List";
@@ -21,6 +21,14 @@ const Board: React.FC<BoardProps> = ({
   onDragEnd,
 }) => {
   const [lists] = useAtom(listsAtom);
+  const [newListTitle, setNewListTitle] = useState("");
+
+  const handleAddList = () => {
+    if (newListTitle.trim()) {
+      addList(newListTitle.trim());
+      setNewListTitle("");
+    }
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -52,12 +60,15 @@ const Board: React.FC<BoardProps> = ({
               )}
             </Droppable>
           ))}
-          <button
-            className={styles.addListButton}
-            onClick={() => addList("New List")}
-          >
-            Add List
-          </button>
+          <div className={styles.addListForm}>
+            <input
+              type="text"
+              placeholder="New list title"
+              value={newListTitle}
+              onChange={(e) => setNewListTitle(e.target.value)}
+            />
+            <button onClick={handleAddList}>Add List</button>
+          </div>
         </div>
       </div>
     </DragDropContext>

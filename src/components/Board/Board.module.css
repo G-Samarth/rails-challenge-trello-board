@@ -22,7 +22,7 @@
 }
 
 .boardActions button {
-  background: #026aa7;
+  background-color: #0079bf;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -31,7 +31,7 @@
 }
 
 .boardActions button:hover {
-  background: #025a8c;
+  background: #005a8c;
 }
 
 .board {
@@ -49,16 +49,26 @@
   height: 100%;
 }
 
-.addListButton {
+.addListForm input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 14px;
+  width: 200px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.addListForm button {
   background-color: #0079bf;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 9px 15px;
   border-radius: 4px;
   cursor: pointer;
-  align-self: flex-start;
+  margin-left: 1rem;
 }
 
-.addListButton:hover {
+.addListForm button:hover {
   background-color: #005a8c;
 }
